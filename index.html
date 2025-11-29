@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .weather-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 300px;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #357ABD;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="weather-container">
+    <h2>🌤️ Weather App</h2>
+    <input type="text" id="locationInput" placeholder="Enter location (e.g., London)" />
+    <br>
+    <button onclick="getWeather()">Get Weather</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    async function getWeather() {
+      const location = document.getElementById('locationInput').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      if (location === '') {
+        resultDiv.innerHTML = '<span class="error">Please enter a location.</span>';
+        return;
+      }
+
+      const apiKey = '9d6cdc8fe8514106b7d125935250507';
+      const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(location)}&aqi=yes`;
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Location not found");
+        }
+        const data = await response.json();
+        const temp = data.current.temp_c;
+        resultDiv.innerHTML = `🌡️ Temperature in <strong>${data.location.name}</strong> is <strong>${temp}°C</strong>`;
+      } catch (error) {
+        resultDiv.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+      }
+    }
+  </script>
+
+</body>
+</html>
