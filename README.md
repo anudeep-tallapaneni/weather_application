@@ -1,1 +1,1 @@
-# weather_application
+This is a simple Weather App built using HTML, CSS, and JavaScript. It allows users to search for any city and instantly get real-time weather information such as temperature using the WeatherAPI service.
